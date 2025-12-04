@@ -32,4 +32,4 @@ coverage/
 /android/app/release
 
 # Firebase
-.env
+/.env
