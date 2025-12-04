@@ -27,5 +27,6 @@ class AuthGate extends ConsumerWidget {
       ),
       data: (user) => user != null ? const AppMainScreen() : const LogInScreen(),
     );
+
   }
 }

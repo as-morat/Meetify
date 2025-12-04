@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meetify/features/screens/log_in_screen.dart';
-
-import '../../route.dart';
 import '../../utils/custom_toast.dart';
 import '../auth/auth_method.dart';
 
@@ -16,7 +13,6 @@ class ProfileScreen extends StatelessWidget {
         child: IconButton.outlined(
           onPressed: () {
             GoogleSignInService.signOut();
-            NavigationHelper.pushReplacement(context, LogInScreen());
             showAppSnackBar(
               context: context,
               type: .success,
