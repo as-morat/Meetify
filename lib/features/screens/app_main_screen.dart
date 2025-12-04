@@ -15,10 +15,10 @@ class AppMainScreen extends StatefulWidget {
 class _AppMainScreenState extends State<AppMainScreen> {
   int currentIndex = 0;
   final List<Widget> pages = [
-    HomeScreen(),
-    Center(child: Text("Chats")),
-    Center(child: Text("Settings")),
-    ProfileScreen(),
+    const HomeScreen(),
+    const Center(child: Text("Chats")),
+    const Center(child: Text("Settings")),
+    const ProfileScreen(),
   ];
 
   @override

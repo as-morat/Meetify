@@ -11,63 +11,65 @@ class HomeScreenAvatar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final theme = ThemeColor(context);
 
-    final double containerHeight = size.height * 0.17;
-    final double avatarSize = size.height * 0.09;
-    final double paddingLeft = size.width * 0.05;
-    final double paddingTop = size.height * 0.025;
-    final double textSize = size.width * 0.07;
-    final double spacing = size.width * 0.06;
+    // Responsive measurements
+    final double containerHeight = size.height * 0.14;
+    final double avatarSize = size.height * 0.082;
+    final double titleSize = size.width * 0.068;
+    final double horizontalPadding = size.width * 0.05;
 
     return Container(
       height: containerHeight,
       width: .infinity,
-      color: theme.containerColor,
-      child: Padding(
-        padding: .only(left: paddingLeft, top: paddingTop),
-        child: Row(
-          children: [
-            Container(
-              height: avatarSize,
-              width: avatarSize,
-              decoration: BoxDecoration(
-                borderRadius: .circular(avatarSize * 0.2),
-                border: .all(color: theme.containerBorder, width: 3),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    FirebaseAuth.instance.currentUser?.photoURL ?? "",
-                  ),
-                  fit: .cover,
+      padding: .symmetric(horizontal: horizontalPadding),
+      decoration: BoxDecoration(
+        color: theme.containerColor.withValues(alpha: 0.5),
+      ),
+
+      child: Row(
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          Column(
+            mainAxisSize: .min,
+            crossAxisAlignment: .start,
+            children: [
+              Text(
+                "Home",
+                style: GoogleFonts.merriweather(
+                  fontSize: titleSize,
+                  fontWeight: .w700,
+                  color: theme.containerTitle,
+                  height: 1.2,
                 ),
               ),
-            ),
-            SizedBox(width: spacing),
-            Column(
-              crossAxisAlignment: .start,
-              mainAxisSize: .min,
-              children: [
-                Text(
-                  "Home",
-                  style: GoogleFonts.merriweather(
-                    fontSize: textSize,
-                    fontWeight: FontWeight.w600,
-                    color: theme.containerTitle,
-                  ),
+              const SizedBox(height: 12),
+              Text(
+                "Welcome Buddy !!",
+                style: GoogleFonts.saira(
+                  fontSize: titleSize * 0.6,
+                  fontWeight: .w600,
+                  color: theme.containerTitle,
+                  letterSpacing: 1,
+                  height: 1.2,
                 ),
-                SizedBox(height: spacing * 0.18),
+              ),
+            ],
+          ),
 
-                Text(
-                  "Hey Buddy, Let's start a meeting.",
-                  style: GoogleFonts.saira(
-                    fontSize: textSize * 0.56,
-                    fontWeight: FontWeight.w600,
-                    color: theme.containerTitle,
-                    letterSpacing: 0.6,
-                  ),
+          Container(
+            height: avatarSize,
+            width: avatarSize,
+            decoration: BoxDecoration(
+              borderRadius: .circular(avatarSize * 0.35),
+              border: .all(color: theme.containerBorder, width: 2.4),
+              image: DecorationImage(
+                image: NetworkImage(
+                  FirebaseAuth.instance.currentUser?.photoURL ?? "",
                 ),
-              ],
+                fit: .cover,
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
