@@ -31,5 +31,5 @@ coverage/
 /android/app/profile
 /android/app/release
 
-# Firebase env
-.env
+# Firebase
+lib/firebase_options.dart
