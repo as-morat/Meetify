@@ -89,5 +89,16 @@ class ThemeColor {
       ? Colors.blueGrey.withValues(alpha: .20)
       : Colors.orangeAccent.withValues(alpha: .20);
 
+  // Switch Active
+  Color get switchActive =>
+      isDark ? Colors.grey.shade300 : Colors.amberAccent.withValues(alpha: 0.5);
+
+  // Switch ActiveThumb
+  Color get switchActiveThumb =>
+      isDark ? Colors.blueGrey.shade300 : Colors.orange.shade300;
+
+  // Switch InactiveThumb
+  Color get switchInactiveThumb => isDark ? Colors.grey : Colors.amberAccent;
+
   static ThemeColor of(BuildContext context) => ThemeColor(context);
 }
