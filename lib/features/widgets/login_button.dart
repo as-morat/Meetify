@@ -54,7 +54,7 @@ class _LoginButtonState extends State<LoginButton> {
         borderRadius: .circular(30),
         onTap: _signIn,
         child: _isLoading
-            ? Center(child: CircularProgressIndicator(color: Colors.deepOrange))
+            ? const Center(child: CircularProgressIndicator(color: Colors.deepOrange))
             : Container(
                 padding: const .symmetric(vertical: 10),
                 decoration: BoxDecoration(

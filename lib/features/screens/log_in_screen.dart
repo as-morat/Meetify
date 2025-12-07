@@ -14,14 +14,14 @@ class LogInScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: .center,
           children: [
-            const LoginTitle(),
+            const LoginTitle(), // Login Intro
             Image.asset(
               "images/onboarding.png",
               color: ThemeColor(context).imageColor,
               fit: .cover,
-            ),
-            const SizedBox(height: 40,),
-            LoginButton()
+            ), //Intro Image
+            const SizedBox(height: 40), // spacing between image & button
+            const LoginButton(), // main login button
           ],
         ),
       ),

@@ -6,7 +6,8 @@ import 'package:meetify/features/provider/auth_gate_provider.dart';
 import 'package:meetify/utils/colors.dart';
 
 import 'firebase_options.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -25,10 +26,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           brightness: .light,
           scaffoldBackgroundColor: primaryBackgroundColor,
+          appBarTheme: const AppBarThemeData(
+            backgroundColor: primaryBackgroundColor,
+          ),
         ),
         darkTheme: ThemeData(
           brightness: .dark,
-          scaffoldBackgroundColor: secondaryBackgroundColor
+          scaffoldBackgroundColor: secondaryBackgroundColor,
+          appBarTheme: const AppBarThemeData(
+            backgroundColor: secondaryBackgroundColor,
+          ),
         ),
         home: const AuthGate(),
       ),

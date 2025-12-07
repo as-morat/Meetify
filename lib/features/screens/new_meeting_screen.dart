@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meetify/utils/colors.dart';
+import '../provider/new_meeting_provider.dart';
 
 class NewMeetingScreen extends ConsumerStatefulWidget {
   const NewMeetingScreen({super.key});
@@ -16,9 +18,9 @@ class _NewMeetingScreenState extends ConsumerState<NewMeetingScreen> {
 
   @override
   void initState() {
-    // final meetingState = ref.read(meetingProvider);
+    final meetingState = ref.read(meetingProvider);
 
-    // meetingIdController = TextEditingController(text: meetingState.roomID);
+    meetingIdController = TextEditingController(text: meetingState.roomID);
     nameController = TextEditingController(
       text: FirebaseAuth.instance.currentUser?.displayName ?? "",
     );
@@ -34,23 +36,28 @@ class _NewMeetingScreenState extends ConsumerState<NewMeetingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final playfair = GoogleFonts.playfair(
-      fontSize: 20, // need to customize
-      fontWeight: FontWeight.w700,
-      color: Colors.deepOrange.shade600, // need to customize
-    );
+    final colors = ThemeColor(context);
+    final meetingState = ref.watch(meetingProvider);
 
-    // final meetingState = ref.watch(meetingProvider);
+    final baseText = GoogleFonts.merriweather(
+      fontSize: rs(context, 14),
+      fontWeight: .w500,
+      color: colors.containerTitle,
+    );
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber, // need to customize
+        elevation: 0,
+        centerTitle: true,
         title: Text(
           "Start a Meeting",
-          style: playfair.copyWith(fontSize: 26, color: Colors.black), // need to customize
+          style: baseText.copyWith(
+            fontSize: rs(context, 23),
+            color: colors.appBarTitle,
+          ),
         ),
-        centerTitle: true,
       ),
+
       body: Padding(
         padding: const .all(16),
         child: Column(
@@ -62,27 +69,29 @@ class _NewMeetingScreenState extends ConsumerState<NewMeetingScreen> {
                 textAlign: .center,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.deepOrange.withAlpha(30),
+                  fillColor: colors.inputFill,
                   border: .none,
-                  // hintText: "Meeting ID: ${meetingState.roomID}",
-                  hintStyle: playfair,
+                  hintText: "Meeting ID: ${meetingState.roomID}",
+                  hintStyle: baseText,
                 ),
               ),
             ),
 
+            const SizedBox(height: 10),
+
             SizedBox(
-              height: 60, // need to customize
+              height: 60,
               child: TextField(
                 controller: nameController,
                 textAlign: .center,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.green.withAlpha(30), // need to customize
+                  fillColor: colors.inputFill2,
                   border: .none,
                   hintText: "Name",
-                  hintStyle: playfair.copyWith(color: Colors.green.shade600), // need to customize
+                  hintStyle: baseText,
                 ),
-                style: playfair.copyWith(color: Colors.green.shade600), // need to customize
+                style: baseText,
               ),
             ),
           ],
@@ -90,4 +99,9 @@ class _NewMeetingScreenState extends ConsumerState<NewMeetingScreen> {
       ),
     );
   }
+}
+
+double rs(BuildContext context, double size) {
+  final width = MediaQuery.of(context).size.width;
+  return (size / 375) * width;
 }
