@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meetify/features/provider/auth_gate_provider.dart';
-import 'package:meetify/features/screens/new_meeting_screen.dart';
 import 'package:meetify/utils/colors.dart';
 
 import 'firebase_options.dart';
@@ -38,8 +37,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: secondaryBackgroundColor,
           ),
         ),
-        // home: const AuthGate(),
-        home: NewMeetingScreen(),
+        home: const AuthGate(),
       ),
     );
   }
