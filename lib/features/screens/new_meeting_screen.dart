@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/experimental/persist.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,9 +39,11 @@ class _NewMeetingScreenState extends ConsumerState<NewMeetingScreen> {
   Widget build(BuildContext context) {
     final colors = ThemeColor(context);
     final meetingState = ref.watch(meetingProvider);
+    final meetStateNotifier = ref.read(meetingProvider.notifier);
     final width = MediaQuery.of(context).size.width;
     bool isMicOn = meetingState.isMicOff;
     bool isCameraOn = meetingState.isCameraOff;
+    bool isLoading = false;
 
     final baseText = GoogleFonts.balsamiqSans(
       fontSize: width * 0.045,
@@ -67,105 +68,140 @@ class _NewMeetingScreenState extends ConsumerState<NewMeetingScreen> {
       body: SafeArea(
         child: Padding(
           padding: const .all(16),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 60,
-                child: TextField(
-                  readOnly: true,
-                  textAlign: .center,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colors.inputFill,
-                    border: .none,
-                    hintText: "Meeting ID: ${meetingState.roomID}",
-                    hintStyle: baseText,
-                  ),
-                ),
-              ), //meeting id
+          child: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(color: Colors.deepOrange),
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      height: 60,
+                      child: TextField(
+                        readOnly: true,
+                        textAlign: .center,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: colors.inputFill,
+                          border: .none,
+                          hintText: "Meeting ID: ${meetingState.roomID}",
+                          hintStyle: baseText,
+                        ),
+                      ),
+                    ), //meeting id
 
-              const SizedBox(height: 8),
+                    const SizedBox(height: 8),
 
-              SizedBox(
-                height: 60,
-                child: TextField(
-                  controller: nameController,
-                  textAlign: .center,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colors.inputFill2,
-                    border: .none,
-                    hintText: "Name",
-                    hintStyle: baseText,
-                  ),
-                  style: baseText,
-                ),
-              ), //username section
+                    SizedBox(
+                      height: 60,
+                      child: TextField(
+                        controller: nameController,
+                        textAlign: .center,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: colors.inputFill2,
+                          border: .none,
+                          hintText: "Name",
+                          hintStyle: baseText,
+                        ),
+                        style: baseText,
+                      ),
+                    ), //username section
 
-              const SizedBox(height: 12),
+                    const SizedBox(height: 12),
 
-              ListTile(
-                onTap: () {
-                  ref.read(meetingProvider.notifier).toggleMic(!isMicOn);
-                },
-                leading: FaIcon(
-                  isMicOn
-                      ? FontAwesomeIcons.microphoneLines
-                      : FontAwesomeIcons.microphoneLinesSlash,
-                  size: width * 0.045,
-                ),
-                title: Text(isMicOn ? "Mute Microphone" : "Unmute Microphone"),
-                titleTextStyle: GoogleFonts.balsamiqSans(
-                  fontSize: width * 0.045,
-                  color: colors.appBarTitle,
-                ),
-                trailing: Switch(
-                  value: isMicOn,
-                  onChanged: (value) {
-                    setState(() {
-                      ref.read(meetingProvider.notifier).toggleMic(value);
-                    });
-                  },
-                  padding: .zero,
-                  activeTrackColor: colors.switchActive,
-                  inactiveTrackColor: Colors.transparent,
-                  inactiveThumbColor: colors.switchInactiveThumb,
-                  activeThumbColor: colors.switchActiveThumb,
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  ref.read(meetingProvider.notifier).toggleCamera(!isCameraOn);
-                },
-                leading: FaIcon(
-                  isCameraOn
-                      ? FontAwesomeIcons.video
-                      : FontAwesomeIcons.videoSlash,
-                  size: width * 0.045,
-                ),
-                title: Text(isCameraOn ? "Turn Off Camera" : "Turn On Camera"),
-                titleTextStyle: GoogleFonts.balsamiqSans(
-                  fontSize: width * 0.045,
-                  color: colors.appBarTitle,
-                ),
-                trailing: Switch(
-                  value: isCameraOn,
-                  onChanged: (value) {
-                    setState(() {
-                      ref.read(meetingProvider.notifier).toggleCamera(value);
-                    });
-                  },
-                  padding: .zero,
-                  activeTrackColor: colors.switchActive,
-                  inactiveTrackColor: Colors.transparent,
-                  inactiveThumbColor: colors.switchInactiveThumb,
-                  activeThumbColor: colors.switchActiveThumb,
-                ),
-              ),
+                    // Toggle Section
+                    ListTile(
+                      onTap: () {
+                        meetStateNotifier.toggleMic(!isMicOn);
+                      },
+                      leading: FaIcon(
+                        isMicOn
+                            ? FontAwesomeIcons.microphoneLines
+                            : FontAwesomeIcons.microphoneLinesSlash,
+                        size: width * 0.045,
+                      ),
+                      title: Text(
+                        isMicOn ? "Mute Microphone" : "Unmute Microphone",
+                      ),
+                      titleTextStyle: GoogleFonts.balsamiqSans(
+                        fontSize: width * 0.045,
+                        color: colors.appBarTitle,
+                      ),
+                      trailing: Switch(
+                        value: isMicOn,
+                        onChanged: (value) {
+                          setState(() {
+                            meetStateNotifier.toggleMic(value);
+                          });
+                        },
+                        padding: .zero,
+                        activeTrackColor: colors.switchActive,
+                        inactiveTrackColor: Colors.transparent,
+                        inactiveThumbColor: colors.switchInactiveThumb,
+                        activeThumbColor: colors.switchActiveThumb,
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        meetStateNotifier.toggleCamera(!isCameraOn);
+                      },
+                      leading: FaIcon(
+                        isCameraOn
+                            ? FontAwesomeIcons.video
+                            : FontAwesomeIcons.videoSlash,
+                        size: width * 0.045,
+                      ),
+                      title: Text(
+                        isCameraOn ? "Turn Off Camera" : "Turn On Camera",
+                      ),
+                      titleTextStyle: GoogleFonts.balsamiqSans(
+                        fontSize: width * 0.045,
+                        color: colors.appBarTitle,
+                      ),
+                      trailing: Switch(
+                        value: isCameraOn,
+                        onChanged: (value) {
+                          setState(() {
+                            meetStateNotifier.toggleCamera(value);
+                          });
+                        },
+                        padding: .zero,
+                        activeTrackColor: colors.switchActive,
+                        inactiveTrackColor: Colors.transparent,
+                        inactiveThumbColor: colors.switchInactiveThumb,
+                        activeThumbColor: colors.switchActiveThumb,
+                      ),
+                    ),
 
+                    const SizedBox(height: 50),
 
-            ],
-          ),
+                    // Meeting Button
+                    GestureDetector(
+                      onTap: () {
+                        isLoading = !isLoading;
+                      },
+                      child: Container(
+                        height: width * 0.13,
+                        width: width * 75,
+                        alignment: .center,
+                        margin: const .symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: colors.button,
+                          borderRadius: const .all(.circular(16)),
+                          border: .all(color: colors.border, width: 2),
+                        ),
+                        child: Text(
+                          "Start a Meeting",
+                          style: GoogleFonts.josefinSans(
+                            fontSize: width * 0.045,
+                            fontWeight: .w700,
+                            color: colors.text,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
