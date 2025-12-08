@@ -7,7 +7,11 @@ class ThemeColor {
   final bool isDark;
 
   ThemeColor(BuildContext context)
-    : isDark = Theme.of(context).brightness == Brightness.dark;
+    : isDark = Theme.of(context).brightness == .dark;
+
+  // profileContainer
+  Color get profileContainer =>
+      isDark ? const Color(0xFF242424) : const Color(0xFFF6FFE0);
 
   // Footer section background
   Color get footerBackground =>
