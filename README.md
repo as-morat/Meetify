@@ -12,16 +12,17 @@ Designed for simplicity and speed, Meetify helps users manage meetings effortles
   <img src="img.png" width="32%" />
   <img src="img_3.png" width="32%" />
   <img src="img_4.png" width="32%" />
+  <img src="img_6.png" width="32%" />
 </p>
 
 ---
 
 ## ☀️ Light Theme UI
-
 <p align="center">
   <img src="img_1.png" width="32%" />
   <img src="img_2.png" width="32%" />
   <img src="img_5.png" width="32%" />
+  <img src="img_7.png" width="32%" />
 </p>
 
 ---
