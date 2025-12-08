@@ -197,13 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // Logout Button
                         GestureDetector(
                           onTap: () {
-                            GoogleSignInService.signOut();
-                            showAppSnackBar(
-                              context: context,
-                              type: .success,
-                              description:
-                                  "See you soon! You’re now logged out.",
-                            );
+                            GoogleSignInService.signOut(context);
                           },
                           child: Container(
                             height: size.width * 0.13,
